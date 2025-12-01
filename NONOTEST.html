@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PHIL'CAE WEBSITE</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      color: white;
+      scroll-behavior: smooth;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 30px;
+      background-color: #000;
+      flex-wrap: wrap;
+    }
+
+    .header-left, .header-center, .header-right {
+      display: flex;
+      align-items: center;
+    }
+
+    .header-center {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 16px;
+      margin: 0 10px;
+      transition: color 0.3s, text-shadow 0.3s;
+    }
+
+    nav a:hover {
+      color: #4da3ff;
+      text-shadow: 0 0 8px #4da3ff;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 34px;
+      font-weight: bold;
+      text-align: center;
+      opacity: 0;
+      animation: textFadeIn 1s forwards;
+      animation-delay: 0.5s;
+    }
+
+    /* Circular, Big Logo */
+    .logo {
+      height: 150px;
+      width: 150px;
+      border-radius: 50%;
+      margin-bottom: 15px;
+      opacity: 0;
+      transform: scale(0.8);
+      animation: logoFadeIn 1s forwards;
+      animation-delay: 0.3s;
+      object-fit: cover;
+    }
+
+    .logo:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 25px #4da3ff, 0 0 35px #4da3ff;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    @keyframes logoFadeIn {
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes textFadeIn {
+      to { opacity: 1; }
+    }
+
+    /* Fade-in Sections */
+    .fade-in { opacity: 0; transition: opacity 0.8s ease-out; }
+    .fade-in.visible { opacity: 1; }
+
+    /* Cover Letter Section */
+    .cover-letter {
+      text-align: center;
+      padding: 20px;
+      max-width: 900px;
+      margin: 30px auto;
+      line-height: 1.7;
+    }
+
+    /* Gallery */
+    .gallery {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 40px 0;
+      flex-wrap: wrap;
+    }
+
+    .gallery-item { text-align: center; width: 30%; }
+
+    .gallery img {
+      width: 100%;
+      height: 230px;
+      object-fit: cover;
+      border-radius: 10px;
+      transition: transform 0.5s ease, box-shadow 0.5s ease, filter 0.5s ease;
+    }
+
+    .gallery img:hover {
+      transform: scale(1.08) rotate(-1deg);
+      box-shadow: 0 0 20px rgba(77, 163, 255, 0.8);
+      filter: brightness(1.1);
+    }
+
+    .caption {
+      margin-top: 10px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    /* About Us */
+    .about-us {
+      background-color: #222;
+      padding: 40px 20px;
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .about-us h2 { font-size: 28px; margin-bottom: 15px; }
+    .about-us p { max-width: 900px; margin: auto; line-height: 1.7; font-size: 18px; }
+
+    /* Contact */
+    .contact {
+      padding: 40px 20px;
+      text-align: center;
+      background-color: #000;
+      margin-top: 50px;
+    }
+
+    .contact h2 { font-size: 28px; margin-bottom: 20px; }
+    .contact-info { font-size: 16px; margin-bottom: 25px; line-height: 1.6; }
+    .contact-info a { color: #4da3ff; text-decoration: none; }
+    .contact-info a:hover { text-decoration: underline; }
+
+    .contact-form {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .contact-form input, .contact-form textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+    }
+
+    .contact-form button {
+      width: 100%;
+      padding: 12px;
+      background-color: #4da3ff;
+      color: black;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .contact-form button:hover { background-color: white; }
+
+    /* Scroll-to-top */
+    #scrollTopBtn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      padding: 12px 18px;
+      font-size: 18px;
+      background-color: #4da3ff;
+      color: black;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      display: none;
+      box-shadow: 0 0 10px rgba(255,255,255,0.3);
+      transition: background-color 0.3s;
+      z-index: 1000;
+    }
+    #scrollTopBtn:hover { background-color: white; }
+
+    /* Modals */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.7);
+    }
+    .modal-content {
+      background-color: #111;
+      margin: 10% auto;
+      padding: 30px;
+      border-radius: 12px;
+      width: 350px;
+      max-width: 90%;
+      text-align: center;
+      box-shadow: 0 0 20px #4da3ff;
+    }
+    .modal-content h2 { margin-bottom: 20px; }
+    .modal-content input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: none; font-size: 16px; }
+    .modal-content button { width: 100%; padding: 12px; background-color: #4da3ff; color: black; font-size: 18px; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; margin-top: 10px; transition: 0.3s; }
+    .modal-content button:hover { background-color: white; }
+    .closeBtn, .closeBtnSignup { color: #fff; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+    .closeBtn:hover, .closeBtnSignup:hover { color: #4da3ff; }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      header { flex-direction: column; align-items: center; gap: 10px; }
+      .header-left, .header-right { justify-content: center; }
+      .header-left, .header-right, .header-center { position: static; transform: none; }
+    }
+    @media (max-width: 600px) {
+      .logo { height: 90px; width: 90px; }
+      header h1 { font-size: 22px; }
+      .gallery-item { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="header-left">
+      <nav class="left-nav">
+        <a href="#home">Home</a>
+        <a href="#about">About Us</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+
+    <div class="header-center">
+      <a href="#home"><img src="logo.png" alt="Phil'Cae Logo" class="logo"></a>
+      <h1>PHIL'CAE TECH SOLUTIONS</h1>
+    </div>
+
+    <div class="header-right">
+      <nav class="right-nav">
+        <a href="#">Login</a>
+        <a href="#">Sign Up</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Login Modal -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <span class="closeBtn">&times;</span>
+      <h2>Login</h2>
+      <form class="login-form">
+        <input type="text" placeholder="Username or Email" required>
+        <input type="password" placeholder="Password" required>
+        <button type="submit">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Sign-Up Modal -->
+  <div id="signupModal" class="modal">
+    <div class="modal-content">
+      <span class="closeBtnSignup">&times;</span>
+      <h2>Sign Up</h2>
+      <form class="signup-form">
+        <input type="text" placeholder="Username" required>
+        <input type="email" placeholder="Email" required>
+        <input type="password" placeholder="Password" required>
+        <button type="submit">Sign Up</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- HOME SECTION -->
+  <div id="home" class="fade-in">
+    <div class="cover-letter">
+      <h2>Welcome to Phil'Cae Tech Solutions</h2>
+      <p>
+        At Phil'Cae Tech Solutions, we provide expert solutions in <b>website development, computer setup, repair, and networking</b> for homes and businesses.  
+        Our mission is to simplify technology, making it reliable, secure, and accessible to everyone.  
+        Whether you need a professional website, a complete PC setup, or a robust network solution, we deliver fast, efficient, and high-quality services tailored to your needs.
+      </p>
+    </div>
+
+    <!-- Gallery -->
+    <div class="gallery fade-in">
+      <div class="gallery-item">
+        <img src="image4.jpg" alt="Networking">
+        <div class="caption">Networking</div>
+      </div>
+      <div class="gallery-item">
+        <img src="image6.jpg" alt="Computer Setup">
+        <div class="caption">Computer Setup</div>
+      </div>
+      <div class="gallery-item">
+        <img src="image8.jpg" alt="Business Approach">
+        <div class="caption">Business-Oriented Approach</div>
+      </div>
+    </div>
+
+    <div class="gallery fade-in">
+      <div class="gallery-item">
+        <img src="image7.jpg" alt="PC Repair">
+        <div class="caption">PC Repair</div>
+      </div>
+      <div class="gallery-item">
+        <img src="image5.jpg" alt="IT Services">
+        <div class="caption">IT Services</div>
+      </div>
+      <div class="gallery-item">
+        <img src="image3.jpg" alt="Web Design">
+        <div class="caption">Web Design</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ABOUT US -->
+  <div id="about" class="about-us fade-in">
+    <h2>About Us</h2>
+    <p>
+      Phil'Cae Tech Solutions is committed to delivering top-notch technology services across the Philippines.  
+      From creating professional, responsive websites to full computer setup and network installation, we focus on providing <b>reliable, fast, and cost-effective solutions</b> for both individuals and businesses.  
+      Our goal is to empower clients by combining modern technology with exceptional service, helping them achieve efficiency and growth.
+    </p>
+  </div>
+
+  <!-- CONTACT -->
+  <div id="contact" class="contact fade-in">
+    <h2>Contact Us</h2>
+    <div class="contact-form">
+      <input type="text" placeholder="Your Name">
+      <input type="email" placeholder="Your Email">
+      <textarea rows="5" placeholder="Your Message"></textarea>
+      <button>Send Message</button>
+    </div>
+    <div class="contact-info">
+      📧 Email: <a href="mailto:philip.esparcia@gmail.com">philip.esparcia@gmail.com</a><br>
+      📞 Phone: 0951 822 3677
+    </div>
+  </div>
+
+  <!-- Scroll-to-top button -->
+  <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
+
+  <!-- JavaScript -->
+  <script>
+    // Fade-in on scroll
+    const elements = document.querySelectorAll('.fade-in');
+    function checkFade() {
+      const triggerBottom = window.innerHeight * 0.9;
+      elements.forEach(el => {
+        const boxTop = el.getBoundingClientRect().top;
+        if(boxTop < triggerBottom) el.classList.add('visible');
+      });
+    }
+    window.addEventListener('scroll', checkFade);
+    window.addEventListener('load', checkFade);
+
+    // Scroll-to-top button
+    const scrollBtn = document.getElementById('scrollTopBtn');
+    window.onscroll = function() {scrollFunction();};
+    function scrollFunction() {
+      if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+        scrollBtn.style.display = "block";
+      } else { scrollBtn.style.display = "none"; }
+    }
+    function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+    // Setup Modals
+    function setupModal(buttonSelector, modalId, closeSelector) {
+      const btn = document.querySelector(buttonSelector);
+      const modal = document.getElementById(modalId);
+      const closeBtn = document.querySelector(closeSelector);
+
+      btn.addEventListener("click", function(e){
+        e.preventDefault();
+        modal.style.display = "block";
+      });
+      closeBtn.addEventListener("click", function(){ modal.style.display = "none"; });
+      window.addEventListener("click", function(e){
+        if(e.target == modal){ modal.style.display = "none"; }
+      });
+    }
+
+    // Login modal
+    setupModal(".right-nav a[href='#']:nth-child(1)", "loginModal", ".closeBtn");
+    // Sign-Up modal
+    setupModal(".right-nav a[href='#']:nth-child(2)", "signupModal", ".closeBtnSignup");
+  </script>
+
+</body>
+</html>
